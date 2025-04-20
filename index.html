@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Workflow Organizer</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Auth Container (Login/Register form) -->
+  <div id="auth-container" class="container">
+    <div class="auth-wrapper">
+      <div class="auth-forms">
+        <h1>Student Workflow Organizer</h1>
+        <div class="tabs">
+          <button class="tab-btn active" data-target="login-form">Login</button>
+          <button class="tab-btn" data-target="register-form">Register</button>
+        </div>
+        
+        <!-- Login Form -->
+        <form id="login-form" class="form active">
+          <div class="form-group">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+          <div class="error-message" id="login-error"></div>
+        </form>
+        
+        <!-- Register Form -->
+        <form id="register-form" class="form">
+          <div class="form-group">
+            <label for="register-username">Username</label>
+            <input type="text" id="register-username" required>
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" required>
+          </div>
+          <div class="form-group">
+            <label for="register-display-name">Display Name</label>
+            <input type="text" id="register-display-name" required>
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Register</button>
+          <div class="error-message" id="register-error"></div>
+        </form>
+      </div>
+      
+      <div class="auth-hero">
+        <div class="hero-content">
+          <h2>Manage Your Academic Life</h2>
+          <p>Track tasks, schedule events, manage resources, and analyze your progress all in one place.</p>
+          <ul class="feature-list">
+            <li><i class="fas fa-check"></i> Task Management</li>
+            <li><i class="fas fa-check"></i> Calendar View</li>
+            <li><i class="fas fa-check"></i> Resource Library</li>
+            <li><i class="fas fa-check"></i> Progress Analytics</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main App Container (hidden initially) -->
+  <div id="app-container" class="container hidden">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>Student Workflow</h2>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="nav-item active" data-page="dashboard">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </li>
+          <li class="nav-item" data-page="tasks">
+            <i class="fas fa-tasks"></i>
+            <span>Tasks</span>
+          </li>
+          <li class="nav-item" data-page="calendar">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Calendar</span>
+          </li>
+          <li class="nav-item" data-page="resources">
+            <i class="fas fa-folder"></i>
+            <span>Resources</span>
+          </li>
+          <li class="nav-item" data-page="analytics">
+            <i class="fas fa-chart-line"></i>
+            <span>Analytics</span>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="avatar">
+            <span id="user-initial">U</span>
+          </div>
+          <div class="user-details">
+            <p id="user-name">User Name</p>
+            <button id="logout-btn" class="btn-text">Logout</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Header -->
+      <header class="content-header">
+        <h1 id="page-title">Dashboard</h1>
+        <div class="header-actions">
+          <button id="add-item-btn" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New
+          </button>
+        </div>
+      </header>
+      
+      <!-- Content Areas (Only one will be visible at a time) -->
+      <div id="dashboard-page" class="page-content active">
+        <div class="dashboard-grid">
+          <!-- Stats Cards -->
+          <div class="stats-container">
+            <div class="stat-card">
+              <div class="stat-icon pending">
+                <i class="fas fa-hourglass-half"></i>
+              </div>
+              <div class="stat-info">
+                <h3 id="pending-tasks-count">0</h3>
+                <p>Pending Tasks</p>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon completed">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="stat-info">
+                <h3 id="completed-tasks-count">0</h3>
+                <p>Completed Tasks</p>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon today">
+                <i class="fas fa-calendar-day"></i>
+              </div>
+              <div class="stat-info">
+                <h3 id="due-today-count">0</h3>
+                <p>Due Today</p>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon overdue">
+                <i class="fas fa-exclamation-circle"></i>
+              </div>
+              <div class="stat-info">
+                <h3 id="overdue-count">0</h3>
+                <p>Overdue</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Upcoming Tasks -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <h2>Upcoming Tasks</h2>
+              <a href="#" class="view-all" data-page="tasks">View All</a>
+            </div>
+            <div id="upcoming-tasks-list" class="list-container">
+              <!-- Tasks will be populated by JavaScript -->
+              <div class="empty-state">
+                <i class="fas fa-tasks"></i>
+                <p>No upcoming tasks</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Recent Resources -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <h2>Recent Resources</h2>
+              <a href="#" class="view-all" data-page="resources">View All</a>
+            </div>
+            <div id="recent-resources-list" class="list-container">
+              <!-- Resources will be populated by JavaScript -->
+              <div class="empty-state">
+                <i class="fas fa-folder"></i>
+                <p>No recent resources</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Tasks by Subject Chart -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <h2>Tasks by Subject</h2>
+            </div>
+            <div id="tasks-by-subject-chart" class="chart-container">
+              <!-- Chart will be rendered by JavaScript -->
+              <div class="empty-state">
+                <i class="fas fa-chart-pie"></i>
+                <p>No data to display</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="tasks-page" class="page-content">
+        <!-- Tasks content will be here -->
+        <div class="empty-state">
+          <i class="fas fa-tasks"></i>
+          <p>No tasks found</p>
+        </div>
+      </div>
+      
+      <div id="calendar-page" class="page-content">
+        <!-- Calendar content will be here -->
+        <div class="empty-state">
+          <i class="fas fa-calendar-alt"></i>
+          <p>Calendar coming soon</p>
+        </div>
+      </div>
+      
+      <div id="resources-page" class="page-content">
+        <!-- Resources content will be here -->
+        <div class="empty-state">
+          <i class="fas fa-folder-open"></i>
+          <p>No resources found</p>
+        </div>
+      </div>
+      
+      <div id="analytics-page" class="page-content">
+        <!-- Analytics content will be here -->
+        <div class="empty-state">
+          <i class="fas fa-chart-line"></i>
+          <p>Analytics coming soon</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Toast Notification -->
+  <div id="toast-container"></div>
+  
+  <!-- Loading Spinner -->
+  <div id="loading-spinner" class="hidden">
+    <div class="spinner"></div>
+  </div>
+  
+  <!-- JavaScript Files -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
